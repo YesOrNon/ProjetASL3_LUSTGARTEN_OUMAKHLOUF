@@ -50,16 +50,16 @@ void                {c += strlen(yytext); return VOID;}
 [\n]        {lineno++; c = 0;}
 
 .           {return 1;}
-<<EOF>>     {return 0;}
+<INITIAL><<EOF>>     {return 0;} /* besoin de <INITIAL> sinon flex détecte une redondance avec <<EOF>> de <COMMENT> */
 
     /* Commentaire */
 \/\/.*              {c += strlen(yytext);}                 /* type // */
+
 "/*"                {c += strlen(yytext); BEGIN(COMMENT);}   /* commentaire du C */
 <COMMENT><<EOF>>    {return 1;}         /* Commentaire non fermé */
 <COMMENT>"*/"       {c += strlen(yytext); BEGIN(INITIAL);}
 <COMMENT>\t         {c += strlen(yytext);}
 <COMMENT>.          {c += strlen(yytext);}
 <COMMENT>\n         {lineno++; c = 0;}
-
 
 %%

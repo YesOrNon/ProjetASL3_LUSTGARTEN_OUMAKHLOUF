@@ -3,4 +3,4 @@ int main(void) {
     error; // error
     char c;
     return 0;
-}0
+}
