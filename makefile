@@ -17,13 +17,13 @@ BINDIR=bin
 OBJDIR=obj
 SRCDIR=src
 
-$(BINDIR)/$(EXEC): $(OBJDIR)/$(PARS).o $(OBJDIR)/$(LEX).yy.o $(OBJDIR)/tree.o
+$(BINDIR)/$(EXEC): $(OBJDIR)/$(PARS).o $(OBJDIR)/$(LEX).yy.o $(OBJDIR)/tree.o | bin
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-$(OBJDIR)/$(PARS).o: $(SRCDIR)/$(PARS).c $(SRCDIR)/tree.h
+$(OBJDIR)/$(PARS).o: $(SRCDIR)/$(PARS).c $(SRCDIR)/tree.h | obj
 	$(CC) -o $@ -c $< $(CFLAGS)
 
-$(OBJDIR)/$(LEX).yy.o: $(SRCDIR)/$(LEX).yy.c $(SRCDIR)/$(PARS).h $(SRCDIR)/tree.h
+$(OBJDIR)/$(LEX).yy.o: $(SRCDIR)/$(LEX).yy.c $(SRCDIR)/$(PARS).h $(SRCDIR)/tree.h | obj
 	$(CC) -o $@ -c $< $(CFLAGS)
 
 $(OBJDIR)/tree.o: $(SRCDIR)/tree.c $(SRCDIR)/tree.h
@@ -34,8 +34,12 @@ $(SRCDIR)/$(PARS).c $(SRCDIR)/$(PARS).h: $(SRCDIR)/$(PARS).y
 
 $(SRCDIR)/$(LEX).yy.c: $(SRCDIR)/$(LEX).lex
 	flex $(LEXFLAGS) -o $(SRCDIR)/$(LEX).yy.c $(SRCDIR)/$(LEX).lex
-		
+
+obj bin:
+	mkdir $@
+
 clean:
 	rm -f $(BINDIR)/* $(OBJDIR)/* $(SRCDIR)/$(LEX).yy.* $(SRCDIR)/$(PARS).[och]
+	rm -r -f bin obj
 
 

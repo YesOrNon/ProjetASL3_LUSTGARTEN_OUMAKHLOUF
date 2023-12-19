@@ -35,6 +35,7 @@ Node * node;
 %token <ident> IDENT
 %token <comp> ORDER EQ TYPE
 %token OR AND IF WHILE ELSE RETURN VOID
+%expect 1
 
 %%
 Prog:  DeclVars DeclFoncts  {
