@@ -144,7 +144,7 @@ ListTypVar:
     |  TYPE IDENT '['']'    {
                             $$ = makeNode(type);
                             strcpy($$->data.comp, $1);
-                            addChild($$, makeNode(ident_tab));
+                            addChild($$, node = makeNode(ident_tab));
                             strcpy(node->data.ident, $2);
                             }
     ;
@@ -299,13 +299,25 @@ ListExp:
 
 void afficherHelp(){
     printf("\n\n");
-    printf("Utilisation : tpcas [OPTION]... [FICHIER]...");
-    // Continuer en s'inspirant de ls --help
-    printf("\n\n\n");
+    printf("Utilisation : tpcas [OPTION]... [FICHIER]...\n");
+    printf("Fait l'analyse syntaxique du fichier .tpc redirigé en entrée\n");
+    printf("\n[OPTION]\n");
+    printf("\t -t, --tree          afficher l'arbre abstrait du fichier analysé\n");
+    printf("\t -h, --help          afficher l'aide et quitter \n");
+    printf("\n[FICHIER]\n");
+    printf("\tPour rediriger un fichier ajoutez \"< file.tpc\" à la ligne de commande\n");
+    printf("\nExemple\n");
+    printf("\t./pathToExec/tpcas -t < pathToFile/file.tpc\n\n");
+    printf("État de sortie :\n");
+    printf(" 0 en cas de succès (pas d'erreur syntaxique dans le fichier ou option qui met fin au programme)\n");
+    printf(" 1 en cas de problème syntaxique dans le fichier\n");
+    printf(" 2 en cas de problème divers, et affiche un message d'erreur (qui n'est pas lié à l'analyse syntaxique)\n");
+    printf("\nSignalez les problèmes de traduction de à : <selym.oumakhlouf@edu.univ-effeil.fr> ou <leo.lustgarten@edu.univ-effeil.fr>\n");
+    printf("\n\n");
 }
 
 int main(int argc, char* argv[]){
-    for (int i = 0; i < argc; i++){
+    for (int i = 1; i < argc; i++){
         if (strcmp(argv[i], "-t") == 0 || strcmp(argv[i], "--tree") == 0){
             treeOption = 1;
         }
@@ -318,8 +330,10 @@ int main(int argc, char* argv[]){
             fprintf(stderr, "\tEntrez -h ou --help pour voir le manuel d'utilisation de tpcas\n\n");
             return 2;
         }
-        else if (strcmp(argv[i], "<") == 0){
-            continue;
+        else{
+            fprintf(stderr, "\n\ttpcas: La ligne de commande entrée est invalide,\n");
+            fprintf(stderr, "\tEntrez -h ou --help pour voir le manuel d'utilisation de tpcas\n\n");
+            return 3;
         }
     }
     return yyparse();
