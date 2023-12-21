@@ -340,6 +340,6 @@ int main(int argc, char* argv[]){
 }
 
 void yyerror(char * s){
-    fprintf(stderr, "Error : %s\n", s);
-    fprintf(stderr, "line : %d, column : %d\n", lineno, c);
+    fprintf(stderr, "   Error : %s\n", s);
+    fprintf(stderr, "   line : %d, column : %d\n", lineno, c);
 }
