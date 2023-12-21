@@ -87,8 +87,37 @@ void printTree(Node *node) {
   if (depth > 0) { // 2514 = L form; 2500 = horizontal line; 251c = vertical line and right horiz 
     printf(rightmost[depth] ? "\u2514\u2500\u2500 " : "\u251c\u2500\u2500 ");
   }
-  printf("%s", StringFromLabel[node->label]);
-  printf("\n");
+  // printf("%s", StringFromLabel[node->label]);
+
+  switch (node->label) {
+
+    case num:
+      printf("%d\n", node->data.num);
+      break;
+
+    case ident_tab:
+    case ident:
+      printf("%s\n", node->data.ident);
+      break;
+
+    case type:
+    case eq:
+    case order:
+      printf("%s\n", node->data.comp);
+      break;
+
+    case addsub:
+    case addsubUnaire:
+    case charac:
+    case divstar:
+      printf("%c\n", node->data.byte);
+      break;
+
+    default:
+      printf("%s\n", StringFromLabel[node->label]);
+      break;
+  }
+
   depth++;
   for (Node *child = node->firstChild; child != NULL; child = child->nextSibling) {
     rightmost[depth] = (child->nextSibling) ? false : true;

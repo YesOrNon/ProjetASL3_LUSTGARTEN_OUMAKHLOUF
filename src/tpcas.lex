@@ -29,7 +29,7 @@ void                {c += strlen(yytext); return VOID;}
 [a-zA-Z_][a-zA-Z_0-9]*  {c += strlen(yytext); strcpy(yylval.ident, yytext); return IDENT;}
 
     /* Caractère */
-'[^']'|'\\[n|t|']'      {c += strlen(yytext); yylval.byte = yytext[0]; return CHARACTER;}
+'[^']'|'\\[n|t|']'      {c += strlen(yytext); yylval.byte = yytext[1]; return CHARACTER;}
 
     /* Opérateurs arithmétiques */
 [+-]        {c += strlen(yytext); yylval.byte = yytext[0]; return ADDSUB;}
